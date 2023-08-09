@@ -6,28 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRepliesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('replies', function (Blueprint $table) {
             $table->id();
             $table->text('body');
 
-            $table->integer('question_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->unsignedBigInteger('question_id');
+            $table->unsignedBigInteger('user_id');
 
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+            // Assuming there's a 'users' table for the 'user_id' foreign key as well.
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down()
     {
         Schema::dropIfExists('replies');
     }
-};
+}
