@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('JWT', ['except' => ['login' , 'signup']]);
     }
 
     /**
@@ -23,6 +24,12 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    public function signup(Request $request)
+    {
+        User::create($request->all());
+        return $this->login($request);
+    }
+
     public function login()
     {
         $credentials = request(['email', 'password']);
