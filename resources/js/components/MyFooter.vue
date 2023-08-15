@@ -1,5 +1,5 @@
 <template>
-    <v-footer class="bg-grey-lighten-1">
+    <v-footer class="bg-grey-lighten-1" id="footer">
         <v-row justify="center" no-gutters>
             <v-btn
                 v-for="link in links"
@@ -17,11 +17,19 @@
         </v-row>
     </v-footer>
 </template>
+
 <script>
-export default{
+export default {
 
 }
 </script>
-<style>
 
+<style>
+/* Apply sticky footer styles */
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
 </style>
