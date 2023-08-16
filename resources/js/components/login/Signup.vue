@@ -1,13 +1,22 @@
 <template>
     <v-container class="d-flex align-center justify-center">
         <v-sheet width="300" class="mx-auto login-form">
-            <v-form @submit.prevent="login">
+            <v-form @submit.prevent="signUp">
+
+                <v-text-field
+                    v-model="form.name"
+                    :rules="namesRules"
+                    label="Name"
+                    required
+                ></v-text-field>
+
                 <v-text-field
                     v-model="form.email"
                     :rules="emailRules"
                     label="E-Mail"
                     required
                 ></v-text-field>
+
                 <v-text-field
                     v-model="form.password"
                     :rules="passwordRules"
@@ -15,14 +24,25 @@
                     type="password"
                     required
                 ></v-text-field>
-                <v-btn type="submit" block class="mt-2">Login</v-btn>
-            </v-form>
 
-            <div class="signup-section">
-                <div class="signup-text">Don't have an account? Sign up here:</div>
-                <router-link to="/signup" class="signup-link">
-                    <v-btn text block class="mt-2 signup-button">
-                        register here <v-icon right>mdi-account-plus</v-icon>
+                <v-text-field
+                    v-model="form.password_confirmation"
+                    :rules="passwordRules"
+                    label="Password"
+                    type="password"
+                    required
+                ></v-text-field>
+
+                <v-btn type="submit" block class="mt-2">Sign Up</v-btn>
+
+
+
+            </v-form>
+            <div class="login-section">
+                <div class="login-text">Already have an account? Sign in here:</div>
+                <router-link to="/login" class="login-link">
+                    <v-btn text block class="mt-2 login-button">
+                        Log In <v-icon right>mdi-login</v-icon>
                     </v-btn>
                 </router-link>
             </div>
@@ -31,17 +51,24 @@
 </template>
 
 <script>
+
 import User from "../../Helpers/User.js";
 import Token from "../../Helpers/Token.js";
 import user from "../../Helpers/User.js";
-
 export default {
+
     data() {
         return {
             form: {
+                name: "",
                 email: "",
                 password: "",
+                password_confirmation: "",
             },
+            namesRules: [
+                (v) => !!v || "E-Mail is required",
+                (v) => v.length >= 3 || "name must have at least 3 characters",
+            ],
             emailRules: [
                 (v) => !!v || "E-Mail is required",
                 (v) => /.+@.+\..+/.test(v) || "E-Mail must be valid",
@@ -52,15 +79,15 @@ export default {
             ],
         };
     },
+
     methods: {
-        async login() {
+        async signUp() {
             try {
-                const response = await User.login(this.form);
-                console.log(user.id());
+                const response = await User.signUp(this.form); // Use the signUp method from User.js
                 if (response && response.data) {
-                    console.log("server stored the response");
+                    console.log('User registered successfully');
                 } else {
-                    console.log("Invalid response from server no response or response data");
+                    console.log("Invalid response from server: no response or response data");
                 }
             } catch (error) {
                 if (error.response && error.response.data) {
@@ -71,10 +98,14 @@ export default {
                     console.log("Error occurred during API call:", error.message);
                 }
             }
-        },
-    },
+        }
+    }
+
+
+
 };
 </script>
+
 
 <style>
 .login-form {
@@ -93,20 +124,21 @@ export default {
     justify-content: center;
 }
 
-.signup-section {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.signup-text {
-    margin-bottom: 8px;
-}
-
-.signup-link {
+.login-link {
     text-decoration: none;
+    color: inherit; /* Keep the same color as the parent element */
 }
 
-.signup-button {
-    width: 100%;
+.login-link:hover {
+    text-decoration: none;
+    color: inherit; /* Keep the same color as the parent element */
+}
+
+.login-link v-icon {
+    color: inherit; /* Keep the same color as the parent element */
+}
+
+.login-link v-icon:hover {
+    color: inherit; /* Keep the same color as the parent element */
 }
 </style>

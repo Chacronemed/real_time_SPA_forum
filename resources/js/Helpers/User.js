@@ -3,6 +3,15 @@ import Token from "./Token.js";
 import AppStorage from "./AppStorage.js";
 import appStorage from "./AppStorage.js";
 class User {
+
+    signUp(formData) {
+        return axios.post('/api/auth/signup', formData)  // Assuming you have an API endpoint for user registration
+            .then(res => {
+                // Handle response after sign up
+                this.responseAfterLogin(res);
+                return res
+            });
+    }
     login(formData) {
         return axios.post('/api/auth/login', formData)
             .then(res=>{
