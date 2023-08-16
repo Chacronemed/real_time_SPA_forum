@@ -15,15 +15,22 @@
                     type="password"
                     required
                 ></v-text-field>
-                <v-btn type="submit" block="true" class="mt-2">Submit</v-btn>
+                <v-btn type="submit" block class="mt-2">Submit</v-btn>
+
+
+
             </v-form>
         </v-sheet>
     </v-container>
 </template>
 
 <script>
-import axios from 'axios';
+
+import User from "../../Helpers/User.js";
+import Token from "../../Helpers/Token.js";
+import user from "../../Helpers/User.js";
 export default {
+
     data() {
         return {
             form: {
@@ -40,13 +47,31 @@ export default {
             ],
         };
     },
+
     methods: {
-        login() {
-            axios.post('/api/auth/login', this.form)
-                .then(res => console.log(res.data))
-                .catch(error => console.log(error.response.data));
+        async login() {
+            try {
+                const response = await User.login(this.form);
+                console.log(user.id())
+                if (response && response.data) {
+                    console.log('server stored the response');
+                } else {
+                    console.log("Invalid response from server no response or response data");
+                }
+            }
+            catch (error) {
+                if (error.response && error.response.data) {
+                    console.log("Error response:", error.response.data);
+                } else if (error.request) {
+                    console.log("No response received from server.");
+                } else {
+                    console.log("Error occurred during API call:", error.message);
+                }
+            }
+
         }
     }
+
 };
 </script>
 
