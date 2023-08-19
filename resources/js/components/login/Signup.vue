@@ -55,6 +55,8 @@
 import User from "../../Helpers/User.js";
 import Token from "../../Helpers/Token.js";
 import user from "../../Helpers/User.js";
+import router from "../../Router/router.js";
+import {useRouter} from "vue-router";
 export default {
 
     data() {
@@ -79,13 +81,21 @@ export default {
             ],
         };
     },
+    created() {
+        window.addEventListener('resize', this.handleResize);
+        if(User.LoggedIn()){
+            router.push({name: 'forem'})
+        }
+    },
 
     methods: {
         async signUp() {
             try {
+                // const router = useRouter();
                 const response = await User.signUp(this.form); // Use the signUp method from User.js
                 if (response && response.data) {
                     console.log('User registered successfully');
+                     await router.push({name: 'forem'});
                 } else {
                     console.log("Invalid response from server: no response or response data");
                 }

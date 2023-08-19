@@ -35,6 +35,7 @@ import User from "../../Helpers/User.js";
 import Token from "../../Helpers/Token.js";
 import user from "../../Helpers/User.js";
 
+
 export default {
     data() {
         return {
@@ -56,9 +57,10 @@ export default {
         async login() {
             try {
                 const response = await User.login(this.form);
-                console.log(user.id());
                 if (response && response.data) {
                     console.log("server stored the response");
+                     const { default: router } = await import("../../Router/router.js");
+                     await router.push({name: 'forem'});
                 } else {
                     console.log("Invalid response from server no response or response data");
                 }

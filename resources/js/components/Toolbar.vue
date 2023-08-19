@@ -1,77 +1,94 @@
 <template>
     <v-card class="toolbar-card">
         <v-toolbar dense class="toolbar" elevation="2">
-            <router-link to="" class="nav-link" tag="div">
+            <router-link to="/" class="nav-link" tag="div">
                 <v-toolbar-title>ENSIAS_overflow</v-toolbar-title>
             </router-link>
             <v-spacer></v-spacer>
 
             <v-row no-gutters class="toolbar-links">
-                <v-col>
-                    <router-link to="/forum" class="nav-link" tag="div">
-                        <v-btn icon>
-                            <v-icon>mdi-file-document-outline</v-icon>
-                            <span class="link-text">Forum</span>
-                        </v-btn>
-                    </router-link>
-                </v-col>
-
-                <v-col>
-                    <router-link to="/ask" class="nav-link" tag="div">
-                        <v-btn icon>
-                            <v-icon>mdi-help-circle</v-icon>
-                            <span class="link-text">Ask a Question</span>
-                        </v-btn>
-                    </router-link>
-                </v-col>
-
-                <v-col>
-                    <router-link to="/category" class="nav-link" tag="div">
-                        <v-btn icon>
-                            <v-icon>mdi-book-open-page-variant</v-icon>
-                            <span class="link-text">
-                <span v-if="windowWidth >= 1100">Category</span>
-              </span>
-                        </v-btn>
-                    </router-link>
+                <v-col v-for="item in items" :key="item.title" >
+                    <div v-if="item.show">
+                        <router-link :to="item.to" class="nav-link" tag="div" @click="handleLinkClick(item)">
+                            <v-btn icon>
+                                <v-icon>{{ item.icon }}</v-icon>
+                                <span class="link-text">{{ item.title }}</span>
+                            </v-btn>
+                        </router-link>
+                    </div>
                 </v-col>
             </v-row>
-
-            <v-col cols="auto" style="margin-right: 20px">
-                <router-link to="/login" class="login-button nav-link" tag="div">
-                    <v-btn icon>
-                        <v-icon class="login-icon">mdi-login</v-icon>
-                        <span class="link-text">Login</span>
-                    </v-btn>
-                </router-link>
-            </v-col>
         </v-toolbar>
     </v-card>
 </template>
 
-
-
 <script>
+import User from "../Helpers/User.js";
+import router from "../Router/router.js";
+
 export default {
     data() {
         return {
-            windowWidth: window.innerWidth
+            windowWidth: window.innerWidth,
+            items: [
+                { title: 'Forum', to: '/forum', 'icon': 'mdi-file-document-outline', show: true },
+                { title: 'Ask Question', to: '/ask', 'icon': 'mdi-help-circle', show: User.LoggedIn() },
+                { title: 'Category', to: '/category', 'icon': 'mdi-book-open-page-variant', show: User.LoggedIn() },
+                { title: 'logout', to: '/logout', 'icon': 'mdi-logout', show: User.LoggedIn() },
+                { title: 'login', to: '/login', 'icon': 'mdi-login', show: !User.LoggedIn() },
+            ]
         };
     },
+
     created() {
         window.addEventListener('resize', this.handleResize);
+        if (User.LoggedIn()) {
+            router.push({ name: 'forem' });
+        }
+        this.updateItemVisibility(); // Update visibility on component creation
     },
+
     beforeDestroy() {
         window.removeEventListener('resize', this.handleResize);
     },
+
     methods: {
         handleResize() {
             this.windowWidth = window.innerWidth;
-        }
-    }
+        },
+
+        handleLinkClick(item) {
+            if (item.title === 'logout') {
+                this.logout();
+            }
+        },
+
+        logout() {
+            User.Logout();
+            router.push('/login');
+        },
+
+        // Method to update the item visibility based on user's login status
+        updateItemVisibility() {
+            const loggedIn = User.LoggedIn();
+            this.items.forEach(item => {
+                if (item.title === 'Ask Question' || item.title === 'Category' || item.title === 'logout') {
+                    item.show = loggedIn;
+                } else if (item.title === 'login') {
+                    item.show = !loggedIn;
+                }
+            });
+        },
+    },
+
+    // Call the method to update item visibility when the user's status changes
+    watch: {
+        '$route'() {
+            this.updateItemVisibility();
+        },
+    },
 };
 </script>
-
 
 <style>
 /* Normal link styling */
@@ -87,4 +104,3 @@ export default {
     }
 }
 </style>
-
