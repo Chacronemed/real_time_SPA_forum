@@ -42,9 +42,6 @@ export default {
 
     created() {
         window.addEventListener('resize', this.handleResize);
-        if (User.LoggedIn()) {
-            router.push({ name: 'forem' });
-        }
         this.updateItemVisibility(); // Update visibility on component creation
     },
 
@@ -60,6 +57,14 @@ export default {
         handleLinkClick(item) {
             if (item.title === 'logout') {
                 this.logout();
+            }
+        },
+
+        async login() {
+            try {
+                await User.login(formData, this.$route.fullPath); // Provide current route as redirect
+            } catch (error) {
+                // Handle login error
             }
         },
 
