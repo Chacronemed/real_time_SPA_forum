@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex align-center justify-center" style="height: 50vh;">
+    <div class="align-center justify-center" style="height: 50vh; margin-top: 20px;">
         <v-card
             class="mx-auto"
             color="#f5f5f7"
@@ -22,8 +22,8 @@
 
             <v-card-title class="headline text--black">{{ data.title }}</v-card-title>
 
-            <v-card-text class="text text-body-1 py-2 text--black">
-                {{ data.body }}
+            <v-card-text class="text text-body-1 py-2 text--black" v-html="body">
+
             </v-card-text>
 
             <v-card-actions>
@@ -34,13 +34,50 @@
                     <span class="subheading me-2 text--black">5{{ data.replies }}</span>
                 </div>
             </v-card-actions>
+            <v-card-actions v-if="own">
+                <v-btn icon @click="edit" >
+                    <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn icon @click="destroy">
+                    <v-icon>mdi-delete</v-icon>
+                </v-btn>
+            </v-card-actions>
         </v-card>
     </div>
 </template>
 
 <script>
+import User from "../../Helpers/User.js";
+import axios from "axios";
+
 export default {
+    data(){
+      return {
+          own : User.own(this.data.user_id)
+      }
+    },
     props: ['data'],
+    computed :{
+        body(){
+            return this.data.body
+        }
+    },
+    methods : {
+
+        destroy(){
+            const token = `Bearer ${localStorage.getItem('token')}`;
+            console.log('Token:', token);
+            const headers = {
+                Authorization: token,
+            };
+            axios.delete(`/api/question/${this.data.slug}`,{ headers })
+                .then(this.$router.push('/forum'))
+                .catch(error => console.log(error.response.data))
+        },
+        edit() {
+            this.$emit('edit-clicked');
+        },
+    }
 };
 </script>
 

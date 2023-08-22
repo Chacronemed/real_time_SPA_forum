@@ -1,12 +1,14 @@
 <template>
     <v-app>
         <toolbar></toolbar>
-        <router-view></router-view>
-        <MyFooter></MyFooter>
+
+        <v-main style="margin-bottom: 80px; overflow: auto">
+            <router-view></router-view>
+        </v-main>
+
+        <my-footer></my-footer>
     </v-app>
 </template>
-
-
 
 <script>
 import Toolbar from "./Toolbar.vue";

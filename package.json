@@ -11,8 +11,10 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@kangc/v-md-editor": "^2.3.17",
         "@mdi/font": "^7.2.96",
         "@vitejs/plugin-vue": "^4.2.3",
+        "highlight.js": "^11.8.0",
         "vue": "^3.2.36",
         "vue-router": "^4.2.4",
         "vuetify": "^3.3.12"

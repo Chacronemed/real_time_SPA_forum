@@ -1,7 +1,7 @@
 <template>
     <v-card class="toolbar-card">
         <v-toolbar dense class="toolbar" elevation="2">
-            <router-link to="/" class="nav-link" tag="div">
+            <router-link to="/forum" class="nav-link" tag="div">
                 <v-toolbar-title>ENSIAS_overflow</v-toolbar-title>
             </router-link>
             <v-spacer></v-spacer>

@@ -27,9 +27,11 @@ export default {
 <style>
 /* Apply sticky footer styles */
 #footer {
+    margin-top: 10px;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
+    overflow: auto;
 }
 </style>
