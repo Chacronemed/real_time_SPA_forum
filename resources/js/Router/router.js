@@ -1,17 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import login from '../components/login/login.vue';
-import signup from "../components/login/Signup.vue";
-import Forum from "../components/forum/Forum.vue";
-import Read from "../components/forum/read.vue";
-import Create from "../components/forum/create.vue";
-
 const routes = [
-    { path: '/login', component: login },
-    { path: '/signup', component: signup },
-    { path: '/forum', component: Forum, name:'forem' },
-    { path: '/ask', component: Create},
-    { path: '/question/:slug', component: Read, name:'read' },
+    { path: '/login', component: () => import('../components/login/login.vue') },
+    { path: '/signup', component: () => import('../components/login/Signup.vue') },
+    { path: '/forum', component: () => import('../components/forum/Forum.vue'), name: 'forum' },
+    { path: '/ask', component: () => import('../components/forum/create.vue') },
+    { path: '/question/:slug', component: () => import('../components/forum/read.vue'), name: 'read' },
+    { path: '/category', component: () => import('../components/Categories/createCategory.vue') },
+
 ];
 
 const router = createRouter({

@@ -31,12 +31,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create($request->all());
+//        Category::create($request->all());
         $category = new Category;
         $category->name =$request->name;
         $category->slug = Str::slug($request->name);
         $category->save() ;
-        return response( 'created ' ,\Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
+        return response(new CategoryResource($category), \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
     }
 
     /**
@@ -64,7 +64,7 @@ class CategoryController extends Controller
             'name'=>$request->name,
             'slug'=>Str::slug($request->name),
         ]);
-        return response('Updated',Response::HTTP_ACCEPTED);
+        return response(new CategoryResource($category),Response::HTTP_ACCEPTED);
     }
 
     /**

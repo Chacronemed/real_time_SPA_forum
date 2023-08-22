@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <toolbar></toolbar>
+        <toolbar style="margin-bottom: 8px; " ></toolbar>
 
         <v-main style="margin-bottom: 80px; overflow: auto">
             <router-view></router-view>

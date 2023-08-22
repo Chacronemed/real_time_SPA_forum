@@ -8,7 +8,9 @@
                 :data=question
                 ></question>
             </v-col>
-            SideBar
+            <v-col cols="4">
+                <app-side-bar></app-side-bar>
+            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -16,9 +18,10 @@
 <script>
 import question from "./question.vue";
 import axios from "axios";
+import AppSideBar from "@/components/forum/AppSideBar.vue";
 
 export default {
-    components: { question },
+    components: {AppSideBar, question },
     data() {
         return {
             questions: {} // Initialize your data property
