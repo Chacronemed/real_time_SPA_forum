@@ -29,9 +29,9 @@
             <v-card-actions>
                 <div class="d-flex align-center">
                     <v-icon class="me-1" color="red" icon="mdi-heart"></v-icon>
-                    <span class="subheading text--black">10{{ data.likes }}</span>
-                    <v-icon class="me-1" color="grey" icon="mdi-comment"></v-icon>
-                    <span class="subheading me-2 text--black">5{{ data.replies }}</span>
+                    <span class="subheading text--black">10{{ data.likes }} Likes  </span>
+                    <v-icon class="me-1" color="grey" icon="mdi-comment" style="margin-left: 10px"></v-icon>
+                    <span class="subheading me-2 text--black">{{ data.reply_count }} Replies</span>
                 </div>
             </v-card-actions>
             <v-card-actions v-if="own">

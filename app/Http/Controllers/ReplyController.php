@@ -64,7 +64,7 @@ class ReplyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Reply $reply)
+    public function update(Request $request,Question $question, Reply $reply)
     {
         $reply->update($request->all());
         return response('updated', Response::HTTP_CREATED);

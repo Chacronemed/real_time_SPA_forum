@@ -20,13 +20,15 @@ class Question extends Model
     }
 
     protected $guarded = [];
+//whenever we fetch the questions we get the replies with em
+    protected $with = ['replies'];
 
     public function user(){
         return $this->belongsTo(User::class);
     }
 
     public function replies(){
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->latest();
     }
     public function category(){
         return $this->belongsTo(Category::class);

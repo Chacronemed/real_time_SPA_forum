@@ -15,6 +15,7 @@ class CreateRepliesTable extends Migration
             $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('user_id');
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             // Assuming there's a 'users' table for the 'user_id' foreign key as well.
 

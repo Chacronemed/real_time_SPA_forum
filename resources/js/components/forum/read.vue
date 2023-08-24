@@ -6,7 +6,12 @@
                 :data="question"
                 v-if="question"
                 @edit-clicked="startEditing"
+                style="margin-bottom: 20px "
             ></show-question>
+            <v-container v-if="question">
+                <replies :question="question" @replycreated="handleReplyCreated" style="margin-bottom: 20px"></replies>
+                <new-reply :questionSlug="question.slug" @replycreated="handleReplyCreated"></new-reply>
+            </v-container>
         </div>
     </div>
 </template>
@@ -15,9 +20,11 @@
 import axios from "axios";
 import ShowQuestion from "./showQuestion.vue";
 import EditQuestion from "./editQuestion.vue";
+import Replies from "../Reply/replies.vue";
+import NewReply from "@/components/Reply/newReply.vue";
 
 export default {
-    components: { EditQuestion, ShowQuestion },
+    components: {NewReply, Replies, EditQuestion, ShowQuestion },
     data() {
         return {
             question: null,
@@ -35,6 +42,15 @@ export default {
         cancelEdit() {
             this.editingQuestionState = false;
         },
+        handleReplyCreated(newReply) {
+            // Update the replies for the current question with the new reply
+            this.question.replies.unshift(newReply);
+            this.scrollToTop()
+        },
+        scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
     },
 };
 </script>
