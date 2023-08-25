@@ -5,6 +5,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NotificationController;
 
 Route::apiResource('/question', QuestionController::class);
 
@@ -15,15 +16,8 @@ Route::apiResource('/question/{question}/reply', \App\Http\Controllers\ReplyCont
 Route::post('/like/{reply}',[LikeController::class,'likeIt']);
 Route::delete('/like/{reply}',[LikeController::class,'unlikeIt']);
 
-Route::middleware('auth:api')->get('notifications', function () {
-    $readNotifications = auth()->user()->readNotifications()->get();
-    $unreadNotifications = auth()->user()->unreadNotifications()->get();
-
-    return [
-        'read' => $readNotifications,
-        'unread' => $unreadNotifications,
-    ];
-});
+Route::middleware('auth:api')->get('notifications',[NotificationController::class,'index']);
+Route::middleware('auth:api')->post('markAsRead',[NotificationController::class,'MarkAsRead']);
 
 
 Route::group([

@@ -14,8 +14,10 @@
             </template>
             <v-list>
                 <v-list-item v-for="(notification, index) in unread" :key="index">
-                    <v-list-item-title>{{ notification.data.question }}</v-list-item-title>
-                    <!-- Display other notification data as needed -->
+                    <router-link :to="`/${notification.path}`">
+                        <v-list-item-title @click="readIt(notification)">{{ notification.question }}</v-list-item-title>
+                        <!-- Display other notification data as needed -->
+                    </router-link>
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -64,6 +66,21 @@ export default {
                     console.error("Error fetching notifications:", error);
                 });
         },
+        readIt(notification) {
+            axios.post('/api/markAsRead', { id: notification.id })
+                .then(res => {
+                    const index = this.unread.findIndex(item => item.id === notification.id);
+                    if (index !== -1) {
+                        this.unread.splice(index, 1);
+                        this.read.push(notification);
+                        this.unread_count--;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error marking notification as read:", error);
+                });
+        }
+
     },
 };
 </script>
