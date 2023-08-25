@@ -6,7 +6,7 @@
             </router-link>
             <v-spacer></v-spacer>
 
-            <app-notification></app-notification>
+            <app-notification v-if="showNotification"></app-notification>
 
             <v-row no-gutters class="toolbar-links">
                 <v-col v-for="item in items" :key="item.title" >
@@ -28,10 +28,12 @@
 import User from "../Helpers/User.js";
 import router from "../Router/router.js";
 import AppNotification from "./AppNotification.vue";
+import user from "../Helpers/User.js";
 export default {
     components : {AppNotification},
     data() {
         return {
+            showNotification: false,
             windowWidth: window.innerWidth,
             items: [
                 { title: 'Forum', to: '/forum', 'icon': 'mdi-file-document-outline', show: true },
@@ -53,6 +55,9 @@ export default {
     },
 
     methods: {
+        user() {
+            return user
+        },
         handleResize() {
             this.windowWidth = window.innerWidth;
         },
@@ -79,6 +84,7 @@ export default {
         // Method to update the item visibility based on user's login status
         updateItemVisibility() {
             const loggedIn = User.LoggedIn();
+            this.showNotification = loggedIn;
             this.items.forEach(item => {
                 if (item.title === 'Ask Question' || item.title === 'Category' || item.title === 'logout') {
                     item.show = loggedIn;
