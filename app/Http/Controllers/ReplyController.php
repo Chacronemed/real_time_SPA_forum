@@ -8,6 +8,7 @@ use App\Models\Reply;
 use App\Notifications\NewReplyNotification;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
 
 class ReplyController extends Controller
 {

@@ -6,6 +6,8 @@
             </router-link>
             <v-spacer></v-spacer>
 
+            <app-notification></app-notification>
+
             <v-row no-gutters class="toolbar-links">
                 <v-col v-for="item in items" :key="item.title" >
                     <div v-if="item.show">
@@ -25,8 +27,9 @@
 <script>
 import User from "../Helpers/User.js";
 import router from "../Router/router.js";
-
+import AppNotification from "./AppNotification.vue";
 export default {
+    components : {AppNotification},
     data() {
         return {
             windowWidth: window.innerWidth,
