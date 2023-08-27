@@ -7,6 +7,8 @@
 <script>
 import User from "../../Helpers/User.js";
 import axios from "axios";
+import Echo from "laravel-echo";
+import Pusher from 'pusher-js';
 
 export default {
     props : ['content'],
@@ -15,6 +17,26 @@ export default {
             liked: this.content.liked,
             count : this.content.like_count
         };
+    },
+    created() {
+        // Initialize Echo instance
+        window.Pusher = Pusher;
+
+        window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key: '8233e38cac34de1b61e2',
+            cluster: 'eu',
+            encrypted: true,
+        });
+
+        // Subscribe to the channel
+        window.Echo.channel('LikeChannel')
+            .listen('LikeEvent', (e) => {
+                console.log('Received LikeEvent:', e);
+                if(this.content.id === e.id){
+                    e.type==1 ? this.count++ : this.count--
+                }
+            });
     },
     methods: {
         likeIt() {
